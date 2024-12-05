@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validasi Email</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .state-hover {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-field {
+            margin-bottom: 20px;
+        }
+
+        .label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .input {
+            position: relative;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #fff;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .input.focused {
+            border-color: #1A56DB;
+        }
+
+        .input.error{
+            border-color: red;
+        }
+
+        .button {
+            padding: 12px;
+            background-color: #1A56DB;
+            color: white;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .button:hover {
+            background-color: #333;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+            visibility: hidden;
+        }
+
+        .success {
+            color: green;
+            font-size: 12px;
+            margin-top: 5px;
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="state-hover">
+        <div class="input-field">
+            <div class="label">Email</div>
+            <input type="email" class="input" placeholder="Enter your email address" />
+            <div class="error"></div>
+        </div>
+        <div class="button">
+            Sign up
+        </div>
+        <div class="success"></div>
+    </div>      
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputField = document.querySelector(".input");
+        const button = document.querySelector(".button");
+        const errorMsg = document.querySelector(".error");
+        const successMsg = document.querySelector(".success");
+
+        // Simulate an array of existing emails
+        const existingEmails = ["user@example.com", "test@domain.com", "hello@world.com", "harry@potter.com"];
+
+        // Focus handling for the input field
+        inputField.addEventListener("focusin", function () {
+            inputField.classList.add("focused");
+        });
+
+        inputField.addEventListener("focusout", function () {
+            inputField.classList.remove("focused");
+        });
+
+        // Email validation function
+        function validateEmail(email) {
+            const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return regex.test(email);
+        }
+
+        // Function to check if email exists in the records
+        function emailExists(email) {
+            return existingEmails.includes(email.toLowerCase());
+        }
+
+        // Event listener for button click (sign up)
+        button.addEventListener("click", function () {
+            const emailValue = inputField.value.trim();
+
+            if (emailValue === "") {
+                errorMsg.textContent = "Email is required!";
+                errorMsg.style.visibility = "visible";
+                successMsg.style.visibility = "hidden";
+            } else if (!validateEmail(emailValue)) {
+                errorMsg.textContent = "Please enter a valid email address!";
+                errorMsg.style.visibility = "visible";
+                successMsg.style.visibility = "hidden";
+            } else if (emailExists(emailValue)) {
+                errorMsg.textContent = "This email address already exists in our records.";
+                errorMsg.style.visibility = "visible";
+                successMsg.style.visibility = "hidden";
+            } else {
+                successMsg.textContent = "Thank you! You have been added to our records.";
+                successMsg.style.visibility = "visible";
+                errorMsg.style.visibility = "hidden";
+            }
+        });
+    });
+</script>
+</html>
